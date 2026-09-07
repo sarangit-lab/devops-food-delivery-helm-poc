@@ -1,0 +1,32 @@
+name: FoodHub CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      - name: Validate Helm chart
+        run: helm lint ./helm/foodhub
+
+      - name: Validate Helm templates
+        run: helm template foodhub ./helm/foodhub
+
+      - name: Validate Kubernetes YAML
+        run: kubectl apply --dry-run=client -f k8s/namespace.yaml
+
+      - name: Build Docker image
+        run: docker build -t foodhub:ci .
