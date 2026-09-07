@@ -1,0 +1,21 @@
+replicaCount: 3
+
+image:
+  repository: foodhub
+  tag: "2.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 80
+
+containerPort: 80
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
